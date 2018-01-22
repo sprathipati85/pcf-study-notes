@@ -120,3 +120,30 @@ Run admin/management tasks as one-off processes
 - Can you name two predefined environment-variables available to any application?
   * `VCAP_APPLICATION`
   * `VCAP_SERVICES`
+  
+  Scotland 
+Day 1- Edinburgh tour (hop on hop off bus)
+https://city-sightseeing.com/en/91/edinburgh
+Day 2, 3 and 4 (3day tour)- Highland tour (Tour bus, also covers Harry Potter Jacobite train ride)
+https://www.highlandexplorertours.com/3-6-day-tours/3-day-tour-isle-of-skye-the-highlands/
+
+
+London
+Day 1, 2 and/or 3 - City tour Hop on hop off bus (Also includes cruise and night bus)
+https://www.bigbustours.com/en/london/hop-on-hop-off-london/
+Day 3 - Emirates air car and Greenwich meridian line (Cruise goes until Greenwich so you actually can go in cruise cover these two and come back in cruise)
+Day 4 - Shopping  
+
+
+Paris
+Plan to reach before Thursday preferably tuesday /wednesday (Take the weekly train card - You can buy Navigo passes for the current week up until Thursday)
+https://parisbytrain.com/paris-train-metro-week-pass-navigo-decouverte/
+
+Day 1 - Versailles Palace
+Day 2 - Disney Land
+Day 3 - Local sightseeing : Eiffel Tower, Lourve, Arc de Triomphe, Notre-Dame de cathedral & local attractions (Night cruise and tour of Eiffel tower can be covered any of these evenings) 
+Day 4 - Local attractions 
+
+
+Switzerland
+We should check with Shruti.
