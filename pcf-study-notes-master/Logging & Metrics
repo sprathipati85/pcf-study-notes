@@ -1,0 +1,85 @@
+Loggreagator - Aggregating & streaming logs and metrics from all user apps & system components
+
+Uses:
+1. App logs can be dupmed from CF CLI or stream these to third party log archive & analysis
+2. Access loggreagator firehose
+3. Deploy nozzles to firehose
+
+Source - Logging agent that run on CF components
+
+Metron - Metron agents are colocated with sources.Collects logs and forwards to Doppler servers
+
+Doppler - Gathers logs from other metron agents 
+stores in temporary buffer 
+sends to traffic controller or third party sys log drains
+
+Traffic Controller - handles client requests for logs. Gathers and collates messages from all doppler servers
+Exposes firehose via /firehose endpoint - users with correct permissions can access the firehose
+
+Firehose - Combined stream of logs from all apps & metrics data from CF components
+
+Nozzle - Component that monitors firehose for specific events and metrics
+Streams this data to external services Ex: Datadog nozzle Syslog nozzle
+
+Contents of Log line 
+Every log line contains 4 fields
+1. Timestamp
+2. Origin code / Log type - APP/1 - digit indicates app instance
+3. Channel - OUT or ERR 
+4. message 
+
+Loggreagator does not support app log - supports only STDOUT /STDERR
+
+Log types
+API - Users make API calls to request changes in app state. Cloud Controller logs the actions that CC takes in response
+STG - Diego cell or Droplet execution agent emits STG logs - while staging/restaging an app. After the droplet is uploaded, STG messages stop and CELL messages being. Instance index is always 0
+RTR - Router emits when it routes HTTP requests to apps. Router messages include app name, router timestamp and http request
+LGR - indicates problems with log messages. Ex: Dropped log messages due to high rate, cant reach syslog drain url
+APP - Every app emits logs 
+SSH - Diego cell emits SSH logs when user access application container through cf ssh
+CELL - Diego cell emits when it starts/stop app
+
+
+View logs in CMD - Tailing logs cf logs APP_NAME 
+cf logs APP_NAME  --recent
+cf logs APP_NAME --recent | grep -v RTR (grep -v excludes 
+
+
+Measuring message throughput on monitoring platform - monitor the number of egress messages from all metrons ->metron.egress metric
+
+or else
+
+login to cf -> cf login
+install cf firehose plugin
+install pipe viewer  apt-get install pv
+cf nozzle -n | pv -l -i 10 -r > /dev/null
+
+
+CC log format - CC logs security events to syslog. Configure a syslog drain to forward to log management service
+CEF:CEF_VERSION|cloud_foundry|cloud_controller_ng|CC_API_VERSION|
+SIGNATURE_ID|NAME|SEVERITY|rt=TIMESTAMP suser=USERNAME suid=USER_GUID
+cs1Label=userAuthenticationMechanism cs1=AUTH_MECHANISM 
+cs2Label=vcapRequestId cs2=VCAP_REQUEST_ID request=REQUEST
+requestMethod=REQUEST_METHOD cs3Label=result cs3=RESULT 
+cs4Label=httpStatusCode cs4=HTTP_STATUS_CODE src=SOURCE_ADDRESS 
+dst=DESTINATION_ADDRESS cs5Label=xForwardedFor cs5=X_FORWARDED_FOR_HEADER
+
+
+Install plugin for firehose
+Run cf add-plugin-repo REPO-NAME URL to add the CF Community plugin repository to your cf CLI plugins
+$ cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
+
+Run cf install-plugin -r PLUGIN-REPO PLUGIN-NAME to install the Firehose plugin from the CF Community plugin repository.
+$ cf install-plugin -r CF-Community "Firehose Plugin"
+
+Run cf nozzle --debug to view the streaming output of the Firehose, which includes logging events and metrics from CF system components
+$ cf nozzle --debug
+
+Run cf plugins to see a list of installed plugins.
+$ cf plugins
+
+Run cf uninstall-plugin PLUGIN-NAME to uninstall the plugin.
+$ cf uninstall-plugin FirehosePlugin
+
+
+
